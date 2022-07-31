@@ -1,0 +1,12 @@
+{
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "c:\\Users\\A One Trick Pony\\Downloads\\flatlaf-2.4.jar",
+            "beautyeye_lnf.jar"
+        ],
+        "exclude": [
+            "c:\\Users\\A One Trick Pony\\Downloads\\Compressed\\json-simple-1.1.jar\\json-simple-1.1.jar"
+        ]
+    }
+}

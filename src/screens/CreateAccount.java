@@ -6,7 +6,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import ClassFiles.Customer;
-import FilesClass.*;
+import FilesClass.DataFile;
 
 import java.awt.Window.Type;
 import javax.swing.*;

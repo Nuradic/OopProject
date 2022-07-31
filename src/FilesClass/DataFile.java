@@ -171,12 +171,14 @@ public final class DataFile implements Serializable {
 
     //file related methods are below
     public  void writeToFile(){
-        try{
-                FileOutputStream myObjOutCustomer= new FileOutputStream("src/FilesClass/data.txt");
-                ObjectOutputStream obOutCustomer = new ObjectOutputStream(myObjOutCustomer);
-                obOutCustomer.writeObject(this);
-                obOutCustomer.close();
-                myObjOutCustomer.close();	
+        // FileOutputStream fileOutputStream;
+        //  ObjectOutputStream objectOutputStream;
+           try{
+           FileOutputStream fileOutputStream= new FileOutputStream("src/FilesClass/data.txt");
+           ObjectOutputStream objectOutputStream= new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(this);
+            objectOutputStream.close();
+            fileOutputStream.close();	
         }
         catch(FileNotFoundException e){
             //Todo
@@ -188,6 +190,7 @@ public final class DataFile implements Serializable {
             e.printStackTrace();
         }
         finally{
+            
             
         }
     };

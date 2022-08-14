@@ -32,15 +32,16 @@ public final class DataFile implements Serializable {
         }
     }
     //differnt methods to manupulate the class
-    public void addToCollection(Customer customer){
+    public Boolean addToCollection(Customer customer){
         if(search(customer.getUsername())==null){
             customerCollection.add(customer);
-            writeToFile();
+            return writeToFile();
         }
+        return false;
     }
-    public void addToCollection(Order order){
+    public Boolean addToCollection(Order order){
         orderList.add(order);
-        writeToFile();
+        return writeToFile();
     }
     public void addToCollection(Admin admin){
         if(search(admin.getId())==-1){
@@ -48,17 +49,19 @@ public final class DataFile implements Serializable {
             writeToFile();
         }
     }
-    public void addToCollection(Food food){
+    public Boolean addToCollection(Food food){
         if(search(food)==-1){
             foodList.add(food);
-            writeToFile();
+            return writeToFile();
         }
+        return false;
     }
-    public void addToCollection(Delivery del){
+    public Boolean addToCollection(Delivery del){
         if(search(del)==-1){
             deliverierList.add(del);
-            writeToFile();
+            return writeToFile();
         }
+        return false;
     }
     //sequential search through the collection of customers by id 
     //Search for Customer 
@@ -170,20 +173,21 @@ public final class DataFile implements Serializable {
     }
 
     //file related methods are below
-    public  void writeToFile(){
-        // FileOutputStream fileOutputStream;
-        //  ObjectOutputStream objectOutputStream;
+    public  Boolean writeToFile(){
            try{
-           FileOutputStream fileOutputStream= new FileOutputStream("src/FilesClass/data.txt");
+           FileOutputStream fileOutputStream= new FileOutputStream("src/FilesClass/data");
            ObjectOutputStream objectOutputStream= new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(this);
             objectOutputStream.close();
             fileOutputStream.close();	
+            return true;
         }
         catch(FileNotFoundException e){
+            return false;
             //Todo
         }
         catch(IOException e){
+            return false;
             //Todo
         }
         catch(Exception e){
@@ -192,11 +196,13 @@ public final class DataFile implements Serializable {
         finally{
             
             
+            
         }
+        return false;
     };
     public  void readFromFile(){
         try{
-        FileInputStream myObjInCustomer = new FileInputStream("src/FilesClass/data.txt");
+        FileInputStream myObjInCustomer = new FileInputStream("src/FilesClass/data");
         ObjectInputStream obInCustomer=new ObjectInputStream(myObjInCustomer);
         Object obj=null;
         while((obj=obInCustomer.readObject())!=null){
@@ -225,6 +231,8 @@ public final class DataFile implements Serializable {
         }
         obInCustomer.close();}
         catch(FileNotFoundException e){
+            // File file=new File("src/FilesClass","data");
+            
             e.printStackTrace();
             //Todo thiss....
         }catch(IOException e){

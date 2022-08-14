@@ -38,15 +38,19 @@ public class MainFrame extends JFrame implements ActionListener {
 
 	
 	public MainFrame() {
+		
+		// System.out.println(UIManager.getDimension(System.in));
 		ImageIcon photo= new ImageIcon("src\\images\\food.jpg");
 		setForeground(Color.LIGHT_GRAY);
-
+		getContentPane().setBackground(new Color(255,255,255,0));
+		
 		setResizable(false);
 		chooseUsers = new String[] {"Admin","Customer","Delivery","Restraunts"};
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 720, 500);
+		setBounds(450, 200, 720, 500);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(119, 136, 153));
+		contentPane.setBackground(new Color(10, 119, 153,80));
+		// contentPane.setBackground(new Color(255,255,255,0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -90,7 +94,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		comboBox = new JComboBox(chooseUsers);
 		comboBox.addActionListener(this);
-		comboBox.setEditable(false);
 		comboBox.setBackground(new Color(248, 248, 255,60));
 		comboBox.setForeground(new Color(248, 248, 255));
 		comboBox.setEditable(false);
@@ -134,7 +137,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		contentPane.add(lblNewLabel_3);
 		
 		restrauntLabel = new JLabel("Restraunt");
-		restrauntLabel.setForeground(new Color(245, 255, 250));
+		restrauntLabel.setForeground(new Color(10, 10, 10));
 		restrauntLabel.setFont(new Font("Viner Hand ITC", Font.PLAIN, 24));
 		restrauntLabel.setBounds(0, 0, 706, 489);
 		contentPane.add(restrauntLabel);
@@ -211,7 +214,8 @@ public class MainFrame extends JFrame implements ActionListener {
 			}
 			if(password.equals(cus.getPassword())){
 				this.dispose();
-				new User(cus);
+				// new User(cus);
+				new LabFrame(cus);
 			}
 			else{
 				passValidLabel.setText("Invalid password");
@@ -246,18 +250,22 @@ public class MainFrame extends JFrame implements ActionListener {
 				return 5;
 			}
 			if(password.equals(cc.adminList.get(index).getPassword())){
+				System.out.println(cc.adminList.get(index).getPassword());
 				this.dispose();
 				new AdminFrame();
 		
 			}
 			else{
 				passValidLabel.setText("Invalid password");
-				new AdminFrame();
+				// new AdminFrame();
 				return 56;
 			}}
-		}catch(Exception Ae){
+		}catch(NumberFormatException Ae){
 			userValidLabel.setText("Invalid ID number");
 			Ae.printStackTrace();
+		}catch(Exception ze){
+			userValidLabel.setText("Something went wrong");
+
 		}
 		return 200;
 

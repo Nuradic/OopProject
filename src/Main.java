@@ -6,6 +6,7 @@ public class Main {
     public static void main(String[] args){
         try{
             UIManager.setLookAndFeel (new FlatLightLaf());
+            // org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper.launchBeautyEyeLNF();
             UIManager.put( "Button.arc", 999 );
             UIManager.put( "Component.arc", 999 );
             UIManager.put( "ProgressBar.arc", 999 );

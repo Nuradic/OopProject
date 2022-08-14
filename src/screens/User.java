@@ -8,8 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.formdev.flatlaf.FlatLightLaf;
-
 import ClassFiles.Customer;
 
 import javax.swing.DefaultListModel;
@@ -34,42 +32,11 @@ public class User extends JFrame {
 	private DefaultListModel listModel=new DefaultListModel();
 	private Customer customer;
 
-	/**
-	 * Launch the application.
-	 */
-	// public static void main(String[] args) {
-	// 	try {
-	// 		UIManager.setLookAndFeel (new FlatLightLaf());
-    //         UIManager.put( "Button.arc", 999 );
-    //         UIManager.put( "Component.arc", 999 );
-    //         UIManager.put( "ProgressBar.arc", 999 );
-    //         UIManager.put( "TextComponent.arc", 999 );
-    //         UIManager.put( "TabbedPane.selectedBackground", new Color(10,230,230) );
-    //         UIManager.put( "TabbedPane.tabSeparatorsFullHeight", true );
-    //         UIManager.put( "TabbedPane.showTabSeparators", true );
-	// 	}catch(Exception e) {
-			
-	// 	}
-	// 	EventQueue.invokeLater(new Runnable() {
-	// 		public void run() {
-	// 			try {
-	// 				User frame = new User();
-	// 				frame.setVisible(true);
-	// 			} catch (Exception e) {
-	// 				e.printStackTrace();
-	// 			}
-	// 		}
-	// 	});
-	// }
-
-	/**
-	 * Create the frame.
-	 */
 	public User(Customer customer) {
 		this.customer = customer;
 	    setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 993, 694);
+		setBounds(350, 100, 993, 694);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -79,11 +46,6 @@ public class User extends JFrame {
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(Color.LIGHT_GRAY);
-		
-		// JLabel userFullName = new JLabel(customer.getFullName());
-		// userFullName.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		// JLabel userName = new JLabel("@"+customer.getUsername());
-		// userName.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		JLabel lblNewLabel_5 = new JLabel("Full Name");
 		lblNewLabel_5.setFont(new Font("Yu Gothic", Font.PLAIN, 16));
@@ -279,8 +241,7 @@ public class User extends JFrame {
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Complaint", null, panel_2, null);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setColumns(10);
+		JTextArea textArea = new JTextArea(40,10);
 		textArea.setFont(new Font("Monospaced", Font.PLAIN, 18));
 		
 		JLabel lblNewLabel_4 = new JLabel("What seems to be the problem?");
@@ -332,17 +293,31 @@ public class User extends JFrame {
 		
 		JPanel panel_6 = new JPanel();
 		scrollPane_2.setViewportView(panel_6);
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBackground(Color.LIGHT_GRAY);
 		GroupLayout gl_panel_6 = new GroupLayout(panel_6);
 		gl_panel_6.setHorizontalGroup(
 			gl_panel_6.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 478, Short.MAX_VALUE)
+				.addGroup(gl_panel_6.createSequentialGroup()
+					.addGap(38)
+					.addComponent(panel_7, GroupLayout.PREFERRED_SIZE, 394, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(46, Short.MAX_VALUE))
 		);
-		gl_panel_6.setVerticalGroup(
-			gl_panel_6.createParallelGroup(Alignment.LEADING)
-				.addGap(0, 603, Short.MAX_VALUE)
-		);
-		panel_6.setLayout(gl_panel_6);
-		panel_4.setLayout(gl_panel_4);
-		contentPane.setLayout(gl_contentPane);
-	}
-}
+			gl_panel_6.setVerticalGroup(
+				gl_panel_6.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_6.createSequentialGroup()
+				.addGap(42)
+				.addComponent(panel_7, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+				.addContainerGap(527, Short.MAX_VALUE))
+				);
+				panel_6.setLayout(gl_panel_6);
+				panel_4.setLayout(gl_panel_4);
+				contentPane.setLayout(gl_contentPane);
+			}
+			public static void main(String[] args) {
+				new User(new Customer("Muraf","Hell","111"));
+			}
+		}
+
+		

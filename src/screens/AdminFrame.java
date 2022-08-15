@@ -10,8 +10,10 @@ import javax.swing.event.ListSelectionListener;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import ClassFiles.Complaint;
 import ClassFiles.Customer;
 import ClassFiles.Food;
+import ClassFiles.Order;
 import FilesClass.DataFile;
 
 import javax.swing.GroupLayout;
@@ -29,6 +31,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.*;
+import javax.swing.JTextArea;
 
 public class AdminFrame extends JFrame implements ActionListener ,ListSelectionListener{
 
@@ -38,15 +41,12 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 	private JTextField phone;
 	private JTextField password;
 	private JTextField address;
-	private JTextField txtFieldPhone;
-	private JTextField textField_3;
 	private JTextField txtAmount;
 	private JTextField txtFieldPrice;
 	private JTextField txtFoodName;
 	private JTextField txtaddName;
 	private JTextField txtaddPrice;
 	private JTextField txtaddAmount;
-	private JTextField textField_12;
 	private ArrayList<Food> foods;
 	private JButton submitBtn;
 	ArrayList<Customer>users;
@@ -54,6 +54,21 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 	private JList<String> list;
 	DataFile dt=  DataFile.getInstance();
 	private DefaultListModel<String> foodModel;
+	private ArrayList<Complaint> compList=DataFile.getInstance().complaintList;
+	private JTextField txtfield;
+	private JTextField txtfield2;
+	private JTextArea textArea;
+	private JButton restrictbtn;
+	JList<String> complaintList ;
+	private JTextField orderBy;
+	private JTextField orderDate;
+	private JTextField textField_2;
+	private ArrayList<Order> orders=DataFile.getInstance().orderList;
+	private DefaultListModel<String> orderModel =new DefaultListModel<String>();
+	private JList<String> orderList_1=new JList<String>(orderModel);
+	DefaultListModel<String>foodOrderedModel=new DefaultListModel<String>();
+	JList<String> orderedFoods=new JList<String>(foodOrderedModel);
+	
 	// public static void main(String[]args ) {
 	// 	try {
 	// 		UIManager.setLookAndFeel (new FlatLightLaf());
@@ -63,6 +78,10 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 
 	
 	public AdminFrame() {
+		orderList_1.addListSelectionListener(this);
+		for(int i=0;i<orders.size();i++) {
+			orderModel.addElement("Order by @"+orders.get(i).getWhoOrdered().getUsername());
+		}
 		foods=dt.foodList;
 		users=dt.customerCollection;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -131,9 +150,11 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 		btnNewButton_1.setBounds(10, 287, 124, 23);
 		panel_4.add(btnNewButton_1);
 		
-		JButton btnNewButton = new JButton("Restrict Account");
-		btnNewButton.setBounds(10, 253, 124, 23);
-		panel_4.add(btnNewButton);
+		restrictbtn = new JButton("Restrict Account");
+		restrictbtn.setEnabled(false);
+		restrictbtn.addActionListener(this);
+		restrictbtn.setBounds(10, 253, 124, 23);
+		panel_4.add(restrictbtn);
 		
 		JLabel lblNewLabel_2 = new JLabel("FullName");
 		lblNewLabel_2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
@@ -204,20 +225,6 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 		panel_4_1.setBounds(0, 108, 191, 489);
 		panel_1.add(panel_4_1);
 		
-		txtFieldPhone = new JTextField();
-		txtFieldPhone.setText("Phone:-0928808587");
-		txtFieldPhone.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
-		txtFieldPhone.setColumns(10);
-		txtFieldPhone.setBounds(0, 171, 191, 26);
-		panel_4_1.add(txtFieldPhone);
-		
-		textField_3 = new JTextField();
-		textField_3.setText("Phone:-0928808587");
-		textField_3.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
-		textField_3.setColumns(10);
-		textField_3.setBounds(0, 134, 191, 26);
-		panel_4_1.add(textField_3);
-		
 		txtAmount = new JTextField();
 		txtAmount.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
 		txtAmount.setColumns(10);
@@ -238,11 +245,11 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 		panel_4_1.add(txtFoodName);
 		
 		JButton btnDeleteFood = new JButton("Delete Food");
-		btnDeleteFood.setBounds(10, 239, 124, 23);
+		btnDeleteFood.setBounds(28, 197, 124, 23);
 		panel_4_1.add(btnDeleteFood);
 		
 		JButton btnNewButton_4 = new JButton("Update");
-		btnNewButton_4.setBounds(10, 208, 124, 23);
+		btnNewButton_4.setBounds(28, 166, 124, 23);
 		panel_4_1.add(btnNewButton_4);
 		
 		JLabel lblNewLabel_7 = new JLabel("Name");
@@ -282,15 +289,10 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 		txtaddAmount.setBounds(65, 161, 111, 34);
 		actionPanel_1.add(txtaddAmount);
 		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		textField_12.setBounds(65, 206, 111, 34);
-		actionPanel_1.add(textField_12);
-		
 		submitBtn = new JButton("Submit");
 		submitBtn.addActionListener(this);
 		submitBtn.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
-		submitBtn.setBounds(34, 274, 124, 34);
+		submitBtn.setBounds(52, 222, 124, 34);
 		actionPanel_1.add(submitBtn);
 		
 		JLabel lblNewLabel_11 = new JLabel("Name");
@@ -322,10 +324,6 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 		lblNewLabel_14.setBounds(609, 79, 128, 18);
 		panel_1.add(lblNewLabel_14);
 		
-		// JScrollPane scrollPane_1 = new JScrollPane();
-		// scrollPane_1.setBounds(192, 591, 384, -529);
-		// scrollPane_1.setViewportView(list_1);
-		// panel_1.add(scrollPane_1);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(202, 69, 381, 528);
@@ -334,11 +332,137 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Orders", null, panel_2, null);
+		panel_2.setLayout(null);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(10, 58, 419, 539);
+		panel_2.add(scrollPane_3);
+		
+		JLabel lblNewLabel_18 = new JLabel("Orders ");
+		lblNewLabel_18.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_18.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		scrollPane_3.setColumnHeaderView(lblNewLabel_18);
+		
+		scrollPane_3.setViewportView(orderList_1);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBounds(469, 58, 218, 539);
+		panel_2.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel lblNewLabel_19 = new JLabel("Order Detail");
+		lblNewLabel_19.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_19.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
+		lblNewLabel_19.setBounds(10, 11, 198, 26);
+		panel_5.add(lblNewLabel_19);
+		
+		orderBy = new JTextField();
+		orderBy.setEditable(false);
+		orderBy.setBounds(112, 48, 96, 26);
+		panel_5.add(orderBy);
+		orderBy.setColumns(10);
+		
+		JLabel lblNewLabel_20 = new JLabel("Order by");
+		lblNewLabel_20.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_20.setBounds(10, 48, 84, 26);
+		panel_5.add(lblNewLabel_20);
+		
+		JLabel lblNewLabel_20_1 = new JLabel("Order date");
+		lblNewLabel_20_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_20_1.setBounds(10, 90, 84, 26);
+		panel_5.add(lblNewLabel_20_1);
+		
+		orderDate = new JTextField();
+		orderDate.setEditable(false);
+		orderDate.setColumns(10);
+		orderDate.setBounds(112, 90, 96, 26);
+		panel_5.add(orderDate);
+		
+		JLabel lblNewLabel_20_2 = new JLabel("");
+		lblNewLabel_20_2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_20_2.setBounds(10, 135, 84, 26);
+		panel_5.add(lblNewLabel_20_2);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(112, 135, 96, 26);
+		panel_5.add(textField_2);
+		
+		JLabel lblNewLabel_21 = new JLabel("Ordered Foods");
+		lblNewLabel_21.setBounds(10, 188, 96, 26);
+		panel_5.add(lblNewLabel_21);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(20, 225, 105, 164);
+		panel_5.add(scrollPane_4);
+		
+		scrollPane_4.setViewportView(orderedFoods);
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("Complaints", null, panel_3, null);
+		panel_3.setLayout(null);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 33, 487, 553);
+		panel_3.add(scrollPane_1);
+		
+		JLabel compLabel = new JLabel("Complaints By Users");
+		compLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
+		compLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		scrollPane_1.setColumnHeaderView(compLabel);
+		DefaultListModel<String>complaintModel=new DefaultListModel<String>();
+		for(int i=0; i<compList.size();i++){
+			complaintModel.addElement(compList.get(i).getCustomer().getUsername());
+		}
+		complaintList = new JList<String>(complaintModel);
+		complaintList.addListSelectionListener(this);
+		complaintList.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
+		scrollPane_1.setViewportView(complaintList);
+		
+		JPanel complaintPanel = new JPanel();
+		complaintPanel.setBounds(507, 33, 249, 553);
+		panel_3.add(complaintPanel);
+		complaintPanel.setLayout(null);
+		
+		JLabel lblNewLabel_10 = new JLabel("Complainer Details");
+		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_10.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
+		lblNewLabel_10.setBounds(10, 11, 229, 33);
+		complaintPanel.add(lblNewLabel_10);
+		
+		txtfield = new JTextField();
+		txtfield.setEditable(false);
+		txtfield.setBounds(89, 82, 150, 33);
+		complaintPanel.add(txtfield);
+		txtfield.setColumns(10);
+
+		txtfield2 = new JTextField();
+		txtfield2.setEditable(false);
+		txtfield2.setColumns(10);
+		txtfield2.setBounds(89, 141, 150, 33);
+		complaintPanel.add(txtfield2);
+		
+		JLabel lblNewLabel_15 = new JLabel("Full Name");
+		lblNewLabel_15.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_15.setBounds(10, 89, 69, 26);
+		complaintPanel.add(lblNewLabel_15);
+		
+		JLabel lblNewLabel_16 = new JLabel("Username");
+		lblNewLabel_16.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_16.setBounds(10, 150, 75, 26);
+		complaintPanel.add(lblNewLabel_16);
+		
+		textArea= new JTextArea();
+		textArea.setEditable(false);
+		textArea.setBounds(23, 245, 216, 82);
+		complaintPanel.add(textArea);
+		
+		JLabel lblNewLabel_17 = new JLabel("Description");
+		lblNewLabel_17.setBounds(23, 208, 90, 26);
+		complaintPanel.add(lblNewLabel_17);
 		contentPane.setLayout(gl_contentPane);
 		setVisible(true);
+		// System.out.println(compList.size());
 	}
 
 
@@ -362,6 +486,18 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 			}else{
 				JOptionPane.showMessageDialog(this,"One or more field is empty  ","Error Adding Food item",JOptionPane.ERROR_MESSAGE);
 			}
+		}else if(Ae.getSource()==restrictbtn){
+			int selected=list.getSelectedIndex();
+			if(users.get(selected).getIsBanned()){
+				restrictbtn.setText("restricted");		
+				DataFile.getInstance().customerCollection.get(selected).setIsBanned(false);
+				}else{
+				restrictbtn.setText("Unrestrict");
+				DataFile.getInstance().customerCollection.get(selected).setIsBanned(true);
+
+			}
+			DataFile.getInstance().writeToFile();
+
 		}
 	}catch(NumberFormatException e){
 
@@ -373,19 +509,46 @@ public class AdminFrame extends JFrame implements ActionListener ,ListSelectionL
 	
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
-		int selectedFood=list_1.getSelectedIndex();
-		int selectedUser=list.getSelectedIndex();
-		if(selectedFood!=-1){
-			txtFoodName.setText(""+foods.get(selectedFood).getName());
-			txtFieldPrice.setText("$"+foods.get(selectedFood).getPrice());
-			txtAmount.setText(""+foods.get(selectedFood).getAmount());
+		if(arg0.getSource()==list_1){
+			int selectedFood=list_1.getSelectedIndex();
+				txtFoodName.setText(""+foods.get(selectedFood).getName());
+				txtFieldPrice.setText("$"+foods.get(selectedFood).getPrice());
+				txtAmount.setText(""+foods.get(selectedFood).getAmount());
+			}else if(arg0.getSource()==list){
+			int selectedUser=list.getSelectedIndex();
+				name.setText(""+users.get(selectedUser).getFullName());
+				username.setText(""+users.get(selectedUser).getUsername());
+				phone.setText(""+users.get(selectedUser).getPhoneNumber());
+				password.setText(""+users.get(selectedUser).getPassword());
+				address.setText(""+users.get(selectedUser).getAddress());
+				restrictbtn.setEnabled(true);
+				if(DataFile.getInstance().customerCollection.get(selectedUser).getIsBanned()){
+					restrictbtn.setText("Unrestrict");
+					DataFile.getInstance().customerCollection.get(selectedUser).setIsBanned(true);
+					DataFile.getInstance().writeToFile();
+				}
+				else{
+					restrictbtn.setText("restrict");
+					DataFile.getInstance().customerCollection.get(selectedUser).setIsBanned(false);
+					DataFile.getInstance().writeToFile();
+				}
+			}
+			else if(arg0.getSource()==complaintList){
+			int selectedComplaint=complaintList.getSelectedIndex();
+				txtfield.setText(""+compList.get(selectedComplaint).getCustomer().getFullName());
+				txtfield2.setText(""+compList.get(selectedComplaint).getCustomer().getUsername());
+				textArea.setText(""+compList.get(selectedComplaint).getDescription());
 		}
-		if(selectedUser!=-1){
-			name.setText(""+users.get(selectedUser).getFullName());
-			username.setText(""+users.get(selectedUser).getUsername());
-			phone.setText(""+users.get(selectedUser).getPhoneNumber());
-			password.setText(""+users.get(selectedUser).getPassword());
-			address.setText(""+users.get(selectedUser).getAddress());
+		else if(arg0.getSource()==orderList_1){
+			int selectedOrder=orderList_1.getSelectedIndex();
+			orderBy.setText(""+orders.get(selectedOrder).getWhoOrdered().getFullName());
+			orderDate.setText(""+orders.get(selectedOrder).getWhenOrdered());
+			foodOrderedModel.removeAllElements();
+			for(int i=0;i<orders.get(selectedOrder).getFoodNames().size();i++){
+				foodOrderedModel.addElement(orders.get(selectedOrder).getFoodNames().get(i).getName());
+
+			}
+		}else if(arg0.getSource()==orderedFoods){
 		}
 	}
 }

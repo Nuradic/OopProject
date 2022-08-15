@@ -1,3 +1,4 @@
+package temp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,21 +11,22 @@ import FilesClass.DataFile;
 // import java.io.*;
 public class TestJSON {
 	public static void main(String args[]) {
-		Customer cus1=new Customer("Nurad Hussen","mure","nurad");
-		// Customer cus2=new Customer("Alamudin","jj","alex");
-		Food fo=new Food("Shiro",780,120);
-		Admin admin=new Admin(34,"Murad","233");
-		Order o=new Order(new ArrayList(),cus1,new Date());
-		Delivery del=new Delivery("Addmn",o);
+
+		// Customer cus1=new Customer("Nurad Hussen","mure","nurad");
+		// // Customer cus2=new Customer("Alamudin","jj","alex");
+		// Food fo=new Food("Shiro",780,120);
+		// Admin admin=new Admin(34,"Murad","233");
+		// Order o=new Order(new ArrayList(),cus1,new Date());
+		// Delivery del=new Delivery("Addmn",o);
 
 		
-		DataFile c=DataFile.getInstance();
-		c.addToCollection(cus1);
-		c.addToCollection(fo);
-		c.addToCollection(admin);
-		c.addToCollection(o);
-		c.addToCollection(del);
-		System.out.println(c.orderList.get(0).getWhoOrdered().getFullName());
+		// DataFile c=DataFile.getInstance();
+		// c.addToCollection(cus1);
+		// c.addToCollection(fo);
+		// c.addToCollection(admin);
+		// c.addToCollection(o);
+		// c.addToCollection(del);
+		// System.out.println(c.orderList.get(0).getWhoOrdered().getFullName());
 
 		// c.delete(cus1);
 		// c.addToCollection(cus1);
@@ -48,6 +50,9 @@ public class TestJSON {
 		// System.out.println(test);
 		// test.remove(1);
 		// System.out.println(test);
+		while(true){
+			System.out.println("h");
+		}
 
 
 

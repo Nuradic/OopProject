@@ -213,9 +213,14 @@ public class MainFrame extends JFrame implements ActionListener {
 				return 5;
 			}
 			if(password.equals(cus.getPassword())){
-				this.dispose();
-				// new User(cus);
-				new LabFrame(cus);
+				if(cus.getIsBanned()){
+					JOptionPane.showMessageDialog(this,"You are restricted by adminstrator");
+				}else{
+					new LabFrame(cus);
+					this.dispose();
+
+					}
+				
 			}
 			else{
 				passValidLabel.setText("Invalid password");
@@ -250,6 +255,7 @@ public class MainFrame extends JFrame implements ActionListener {
 				return 5;
 			}
 			if(password.equals(cc.adminList.get(index).getPassword())){
+				
 				System.out.println(cc.adminList.get(index).getPassword());
 				this.dispose();
 				new AdminFrame();

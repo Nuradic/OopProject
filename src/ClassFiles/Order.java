@@ -14,13 +14,11 @@ public class Order implements Serializable {
     private Date whenOrdered;
     private Date whenWillDeliver;
     private Boolean isPayed;
-    public class Food{
-        
-    }
-    public Order(ArrayList<Food> foodList,Customer customer,Date d){
+    public Order(ArrayList<Food> foodList,Customer customer){
         this.foodList= foodList;
         this.customer = customer;
-        whenOrdered=d;
+        whenOrdered =new Date();
+        // whenOrdered=d;
     }
     
     //setters for the field variables

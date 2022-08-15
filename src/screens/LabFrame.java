@@ -17,8 +17,10 @@ import javax.swing.event.ListSelectionListener;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import ClassFiles.Complaint;
 import ClassFiles.Customer;
 import ClassFiles.Food;
+import ClassFiles.Order;
 import FilesClass.DataFile;
 
 import javax.swing.JCheckBox;
@@ -55,13 +57,20 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 	int count;
 	private JTextField txtFoodName;
 	private JTextField txtPrice;
+	private JButton submitbtn;
+	private JButton addbtn;
+	JList <String>orderList;
 	Customer customer;
+	private JButton orderSubmit;
 	DataFile dt=DataFile.getInstance();
 	ArrayList<Food>foods=dt.foodList;
 	DefaultListModel<String> foodModel ;
 	JList<String>foodList;
 	private JTextField namehere;
 	private JTextField usernamehere;
+	private JTextArea textArea;
+	private ArrayList<Food>foodOrdered=new ArrayList<Food>();
+	private DefaultListModel<String> orderModel=new DefaultListModel<String>();
 
 	/**
 	 * Launch the application.
@@ -128,10 +137,12 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		lblNewLabel_1_1.setBounds(10, 84, 54, 22);
 		panel_4.add(lblNewLabel_1_1);
 		
-		JButton btnNewButton = new JButton("Add");
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btnNewButton.setBounds(10, 154, 54, 50);
-		panel_4.add(btnNewButton);
+		addbtn= new JButton("Add");
+		addbtn.setEnabled(false);
+		addbtn.addActionListener(this);
+		addbtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		addbtn.setBounds(10, 154, 54, 50);
+		panel_4.add(addbtn);
 		
 		txtFoodName = new JTextField();
 		txtFoodName.setEditable(false);
@@ -147,14 +158,31 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		txtPrice.setBounds(57, 88, 79, 22);
 		panel_4.add(txtPrice);
 		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 257, 136, 189);
+		panel_4.add(scrollPane_1);
+		
+		orderList = new JList<String>(orderModel);
+		
+		orderList.addListSelectionListener(this);
+		scrollPane_1.setViewportView(orderList);
+		
+		JLabel lblNewLabel_5 = new JLabel("Current Order");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_5.setBounds(15, 213, 121, 33);
+		panel_4.add(lblNewLabel_5);
+		
+		orderSubmit = new JButton("Order");
+		orderSubmit.setEnabled(false);
+		orderSubmit.addActionListener(this);
+		orderSubmit.setBounds(32, 457, 104, 22);
+		panel_4.add(orderSubmit);
+		
 		JLabel lblNewLabel = new JLabel("Select Food to add to order");
 		lblNewLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(10, 11, 480, 24);
 		panel.add(lblNewLabel);
-		
-		JPanel foodPanel = new JPanel();
-		tabbedPane.addTab("Foods", null, foodPanel, null);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Complain", null, panel_2, null);
@@ -165,12 +193,13 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		lblNewLabel_3.setBounds(23, 100, 379, 31);
 		panel_2.add(lblNewLabel_3);
 		
-		JButton btnNewButton_1 = new JButton("Submit");
-		btnNewButton_1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
-		btnNewButton_1.setBounds(339, 299, 125, 37);
-		panel_2.add(btnNewButton_1);
+		submitbtn= new JButton("Submit");
+		submitbtn.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
+		submitbtn.addActionListener(this);
+		submitbtn.setBounds(339, 299, 125, 37);
+		panel_2.add(submitbtn);
 		
-		JTextArea textArea = new JTextArea();
+		 textArea= new JTextArea();
 		textArea.setRows(10);
 		textArea.setColumns(20);
 		textArea.setBounds(23, 142, 442, 144);
@@ -208,12 +237,11 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		
 		namehere = new JTextField();
 		namehere.setText(customer.getFullName());
-		
 		namehere.setEditable(false);
 		namehere.setBounds(100, 85, 158, 31);
 		panel_1.add(namehere);
 		namehere.setColumns(10);
-		
+
 		JLabel lblNewLabel_4 = new JLabel("Username");
 		lblNewLabel_4.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
 		lblNewLabel_4.setBounds(10, 136, 80, 31);
@@ -231,15 +259,38 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 
 	@Override
 	public void actionPerformed(ActionEvent Ae) {
-		// if(Ae.getSource()==)
+		if(Ae.getSource()==submitbtn){
+			if(textArea.getText().length()!=0){
+				Complaint comp=new Complaint(customer,textArea.getText());
+				DataFile.getInstance().addToCollection(comp);
+				JOptionPane.showMessageDialog(this, "Complaint Set succesfully" );
+			}
+
+		}
+		else if(Ae.getSource()==addbtn){
+			orderSubmit.setEnabled(true);
+			int selected=foodList.getSelectedIndex();
+			foodOrdered.add(foods.get(selected));
+			orderModel.addElement(foods.get(selected).getName());
+		}
+		 if(Ae.getSource()==orderSubmit){
+			Order order=new Order(foodOrdered,customer);
+			DataFile.getInstance().addToCollection(order);
+			JOptionPane.showMessageDialog(this, "Your Order is Placed Succesfully");
+		}
 		
 	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
-		int selectedFood=foodList.getSelectedIndex();
-		txtFoodName.setText(foods.get(selectedFood).getName());
-		txtPrice.setText(""+foods.get(selectedFood).getPrice());
+		if(arg0.getSource()==orderList){
+
+		}else if(arg0.getSource()==foodList){
+			addbtn.setEnabled(true);
+			int selectedFood=foodList.getSelectedIndex();
+			txtFoodName.setText(foods.get(selectedFood).getName());
+			txtPrice.setText(""+foods.get(selectedFood).getPrice());
+		}
 		
 	}
 		}

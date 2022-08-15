@@ -11,6 +11,7 @@ public final class DataFile implements Serializable {
       public ArrayList<Admin>adminList=new ArrayList<Admin>();
       public ArrayList<Food>foodList=new ArrayList<Food>();
       public ArrayList<Delivery>deliverierList=new ArrayList<Delivery>();
+      public ArrayList<Complaint>complaintList=new ArrayList<Complaint>();
     //making the class singleton class :instanciate only once
     private static DataFile instance;
     public static DataFile getInstance() {
@@ -63,6 +64,12 @@ public final class DataFile implements Serializable {
         }
         return false;
     }
+    public Boolean addToCollection(Complaint comp){
+        complaintList.add(comp);
+        System.out.println("Added Succees");
+        return writeToFile();
+
+    }
     //sequential search through the collection of customers by id 
     //Search for Customer 
     public int search(Customer customer){
@@ -94,7 +101,7 @@ public final class DataFile implements Serializable {
         Customer customer=null;
         return customer;
     }
-    //Search for Adminmin
+    //Search for Admin
     public int search(Admin admin){
         int len=adminList.size();
         for(int i=0;i<len;i++){
@@ -211,7 +218,8 @@ public final class DataFile implements Serializable {
                 int len2=((DataFile)obj).adminList.size();
                 int len3=((DataFile)obj).foodList.size();
                 int len4=((DataFile)obj).orderList.size();
-                int len5=((DataFile)obj).deliverierList.size();
+                int len5=((DataFile)obj).deliverierList.size();((DataFile)obj).deliverierList.size();
+                int len6=((DataFile)obj).complaintList.size();
                 for(int i=0;i<len;i++){
                     customerCollection.add(((DataFile)obj).customerCollection.get(i));
                 }
@@ -226,6 +234,9 @@ public final class DataFile implements Serializable {
                 }
                 for(int i=0;i<len5;i++){
                     deliverierList.add(((DataFile)obj).deliverierList.get(i));
+                }
+                for(int i=0;i<len6;i++){
+                    complaintList.add(((DataFile)obj).complaintList.get(i));
                 }
             }
         }

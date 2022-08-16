@@ -331,14 +331,20 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 			cancelbtn.setEnabled(true);
 			int selected=foodList.getSelectedIndex();
 			totalPrice=totalPrice+foods.get(selected).getHowMany();
-			DataFile.getInstance().foodList.get(selected).updateAmount();
-			System.out.println(DataFile.getInstance().foodList.get(selected).getHowMany());
-			foodOrdered.add(foods.get(selected));
-			orderModel.addElement(foods.get(selected).getName());
-			for(int i=0;i<foodOrdered.size();i++){
-				prices =prices+foodOrdered.get(i).getPrice();
+			if(DataFile.getInstance().foodList.get(selected).getAmount()!=0){
+				DataFile.getInstance().foodList.get(selected).updateAmount();
+				foodOrdered.add(foods.get(selected));
+				orderModel.addElement(foods.get(selected).getName());
+				for(int i=0;i<foodOrdered.size();i++){
+					prices =prices+foodOrdered.get(i).getPrice();
+				}
+				pricelbl.setText(""+prices);
+			}else{
+				JOptionPane.showMessageDialog(this,"The restraunt run out of "+foods.get(selected).getName());
+
 			}
-			pricelbl.setText(""+prices);
+			System.out.println(DataFile.getInstance().foodList.get(selected).getHowMany());
+			
 		}
 		 if(Ae.getSource()==orderSubmit){
 			 orderModel.removeAllElements();

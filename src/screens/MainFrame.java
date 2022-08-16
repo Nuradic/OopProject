@@ -99,13 +99,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		bRegister.setBounds(334, 285, 90, 23);
 		contentPane.add(bRegister);
 		
-		bReset = new JButton("Forgot password?");
-		bReset.setForeground(new Color(245, 255, 250));
-		bReset.setFont(new Font("Segoe UI Semilight", Font.BOLD, 11));
-		bReset.setHorizontalAlignment(SwingConstants.RIGHT);
-		bReset.setBackground(new Color(119, 136, 153,10));
-		bReset.setBounds(236, 338, 144, 23);
-		contentPane.add(bReset);
 		userValidLabel = new JLabel(" ");
 		userValidLabel.setForeground(Color.RED);
 		userValidLabel.setBounds(187, 154, 237, 14);
@@ -122,11 +115,6 @@ public class MainFrame extends JFrame implements ActionListener {
 		lblNewLabel_2.setBounds(177, 289, 147, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		lblNewLabel_3 = new JLabel("Or");
-		lblNewLabel_3.setForeground(new Color(245, 255, 250));
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(275, 314, 49, 14);
-		contentPane.add(lblNewLabel_3);
 		
 		restrauntLabel = new JLabel("Restraunt");
 		restrauntLabel.setForeground(new Color(10, 10, 10));

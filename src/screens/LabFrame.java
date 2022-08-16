@@ -1,8 +1,5 @@
 package screens;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -10,12 +7,11 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.AncestorListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.formdev.flatlaf.FlatLightLaf;
 
 import ClassFiles.Complaint;
 import ClassFiles.Customer;
@@ -23,29 +19,16 @@ import ClassFiles.Food;
 import ClassFiles.Order;
 import FilesClass.DataFile;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JTable;
-import javax.swing.JRadioButton;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
-import java.awt.CardLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.GridLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-import javax.swing.AbstractListModel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -69,32 +52,27 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 	private JTextField namehere;
 	private JTextField usernamehere;
 	private JTextArea textArea;
+	private JButton cancelbtn ;
 	private ArrayList<Food>foodOrdered=new ArrayList<Food>();
 	private DefaultListModel<String> orderModel=new DefaultListModel<String>();
+	private int totalPrice=0;
+	private JLabel pricelbl;
+	private JTextField orderDate;
+	private JTextField totalPricelbl;
+	private JList<String> orderedList;
+	private DefaultListModel<String> myOrderModel=new DefaultListModel<String>();
+	private ArrayList<Order> myorders=new ArrayList<Order>();
+	private DefaultListModel<String> orderedfoodmodel=new DefaultListModel<String>();
 
-	/**
-	 * Launch the application.
-	 */
-	// public static void main(String[] args) {
-	// 	try {
-	// 		UIManager.setLookAndFeel (new FlatLightLaf());
-	// 	}catch(Exception e){}
-	// 	EventQueue.invokeLater(new Runnable() {
-	// 		public void run() {
-	// 			try {
-	// 				LabFrame frame = new LabFrame();
-	// 				frame.setVisible(true);
-	// 			} catch (Exception e) {
-	// 				e.printStackTrace();
-	// 			}
-	// 		}
-	// 	});
-	// }
-
-	/**
-	 * Create the frame.
-	 */
 	public LabFrame(Customer customer) {
+		DataFile dt=DataFile.getInstance();
+		ArrayList<Order> orders=dt.orderList;	
+		for(int i=0;i<orders.size();i++){
+			if(customer.getUsername().equals(((Order) orders.get(i)).getWhoOrdered().getUsername())){
+				myorders.add(orders.get(i));
+				myOrderModel.addElement(""+orders.get(i).getId());
+			}
+		}
 		this.customer = customer;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(450, 150, 900, 600);
@@ -103,6 +81,7 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		setContentPane(contentPane);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		tabbedPane.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		
 		JPanel panel = new JPanel();
@@ -159,7 +138,7 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		panel_4.add(txtPrice);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 257, 136, 189);
+		scrollPane_1.setBounds(10, 257, 136, 156);
 		panel_4.add(scrollPane_1);
 		
 		orderList = new JList<String>(orderModel);
@@ -177,6 +156,20 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 		orderSubmit.addActionListener(this);
 		orderSubmit.setBounds(32, 457, 104, 22);
 		panel_4.add(orderSubmit);
+		
+		JLabel lblNewLabel_6 = new JLabel("Total Price");
+		lblNewLabel_6.setBounds(10, 424, 64, 22);
+		panel_4.add(lblNewLabel_6);
+		
+		pricelbl= new JLabel("");
+		pricelbl.setBounds(84, 424, 52, 22);
+		panel_4.add(pricelbl);
+		
+		cancelbtn = new JButton("Cancel");
+		cancelbtn.addActionListener(this);
+		cancelbtn.setEnabled(false);
+		cancelbtn.setBounds(32, 481, 104, 22);
+		panel_4.add(cancelbtn);
 		
 		JLabel lblNewLabel = new JLabel("Select Food to add to order");
 		lblNewLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
@@ -223,6 +216,72 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 						.addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 553, GroupLayout.PREFERRED_SIZE))
 					.addGap(0))
 		);
+		
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("Status", null, panel_3, null);
+		panel_3.setLayout(null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(10, 104, 239, 433);
+		panel_3.add(scrollPane_2);
+		
+		 orderedList= new JList<String>(myOrderModel);
+		//  orderedList.add
+		 orderedList.addListSelectionListener(this);
+		 
+		scrollPane_2.setViewportView(orderedList);
+		
+		JPanel panel_5_1 = new JPanel();
+		panel_5_1.setBounds(247, 104, 211, 433);
+		panel_3.add(panel_5_1);
+		panel_5_1.setLayout(null);
+		
+		JLabel lblNewLabel_19 = new JLabel("Order Detail");
+		lblNewLabel_19.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_19.setFont(new Font("Yu Gothic UI", Font.PLAIN, 16));
+		lblNewLabel_19.setBounds(10, 11, 198, 26);
+		panel_5_1.add(lblNewLabel_19);
+		
+		JLabel lblNewLabel_20_1 = new JLabel("Order date");
+		lblNewLabel_20_1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel_20_1.setBounds(10, 90, 84, 26);
+		panel_5_1.add(lblNewLabel_20_1);
+		
+		orderDate = new JTextField();
+		orderDate.setEditable(false);
+		orderDate.setColumns(10);
+		orderDate.setBounds(80, 90, 128, 26);
+		panel_5_1.add(orderDate);
+		
+		totalPricelbl = new JTextField();
+		totalPricelbl.setEditable(false);
+		totalPricelbl.setColumns(10);
+		totalPricelbl.setBounds(112, 135, 96, 26);
+		panel_5_1.add(totalPricelbl);
+		
+		JLabel lblNewLabel_21 = new JLabel("Ordered Foods");
+		lblNewLabel_21.setBounds(10, 188, 96, 26);
+		panel_5_1.add(lblNewLabel_21);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(20, 225, 105, 91);
+		panel_5_1.add(scrollPane_4);
+		
+		JList<String> orderedfoodlist = new JList<String>(orderedfoodmodel);
+		scrollPane_4.setViewportView(orderedfoodlist);
+		
+		JLabel lblNewLabel_22 = new JLabel("Total price ");
+		lblNewLabel_22.setFont(new Font("Yu Gothic UI", Font.PLAIN, 14));
+		lblNewLabel_22.setBounds(10, 139, 84, 19);
+		panel_5_1.add(lblNewLabel_22);
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("delivered");
+		rdbtnNewRadioButton.setBounds(97, 44, 111, 23);
+		panel_5_1.add(rdbtnNewRadioButton);
+		
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("payed");
+		rdbtnNewRadioButton_1.setBounds(20, 44, 111, 23);
+		panel_5_1.add(rdbtnNewRadioButton_1);
 		panel_1.setLayout(null);
 		
 		JLabel welcomelbl = new JLabel("Welcome "+customer.getFullName());
@@ -265,33 +324,60 @@ public class LabFrame extends JFrame implements ActionListener ,ListSelectionLis
 				DataFile.getInstance().addToCollection(comp);
 				JOptionPane.showMessageDialog(this, "Complaint Set succesfully" );
 			}
-
 		}
 		else if(Ae.getSource()==addbtn){
+			int prices=0;
 			orderSubmit.setEnabled(true);
+			cancelbtn.setEnabled(true);
 			int selected=foodList.getSelectedIndex();
+			totalPrice=totalPrice+foods.get(selected).getHowMany();
+			DataFile.getInstance().foodList.get(selected).updateAmount();
+			System.out.println(DataFile.getInstance().foodList.get(selected).getHowMany());
 			foodOrdered.add(foods.get(selected));
 			orderModel.addElement(foods.get(selected).getName());
+			for(int i=0;i<foodOrdered.size();i++){
+				prices =prices+foodOrdered.get(i).getPrice();
+			}
+			pricelbl.setText(""+prices);
 		}
 		 if(Ae.getSource()==orderSubmit){
-			Order order=new Order(foodOrdered,customer);
+			 orderModel.removeAllElements();
+			 orderSubmit.setEnabled(false);
+			 cancelbtn.setEnabled(false);
+			 pricelbl.setText("");
+			 Order order=new Order(foodOrdered,customer);
+			 myOrderModel.addElement(""+order.getId());
 			DataFile.getInstance().addToCollection(order);
 			JOptionPane.showMessageDialog(this, "Your Order is Placed Succesfully");
 		}
-		
-	}
+		if(Ae.getSource()==cancelbtn){
+			orderModel.removeAllElements();
+			orderSubmit.setEnabled(false);
+			cancelbtn.setEnabled(false);
+			pricelbl.setText("");
+		}
 
+	}
 	@Override
 	public void valueChanged(ListSelectionEvent arg0) {
 		if(arg0.getSource()==orderList){
-
-		}else if(arg0.getSource()==foodList){
+		}
+		 if(arg0.getSource()==foodList){
 			addbtn.setEnabled(true);
 			int selectedFood=foodList.getSelectedIndex();
 			txtFoodName.setText(foods.get(selectedFood).getName());
 			txtPrice.setText(""+foods.get(selectedFood).getPrice());
 		}
-		
+		if(arg0.getSource()==orderedList){
+			int selectedOrder=orderedList.getSelectedIndex();
+			orderDate.setText(""+myorders.get(selectedOrder).getWhenOrdered());
+			totalPricelbl.setText(""+myorders.get(selectedOrder).getTotalPrice());
+			orderedfoodmodel.removeAllElements();
+			for(int i=0;i<myorders.get(selectedOrder).getFoodNames().size();i++){
+				orderedfoodmodel.addElement(myorders.get(selectedOrder).getFoodNames().get(i).getName());
+
+			}
+		}
 	}
 		}
 
@@ -299,19 +385,14 @@ class T extends Thread {
 
 	@Override
 		public void run() {
-			
-			
 	}
 	public void justRun(JLabel t1){
 		for(int i = 0; i <200;i++){
 			try{
 				t1.setText(String.valueOf(i));
-				t1.setText("hello");
-				System.out.println(i);
 				Thread.sleep(1000);
-				// i++;	
-				// this.repaint();
-			}catch(InterruptedException e){
+			}
+			catch(InterruptedException e){
 
 			}
 

@@ -7,6 +7,9 @@ public class Food implements Serializable{
     private int amount;
     private int price;
     private int howMany;
+    public void updateAmount(){
+        this.amount=amount-1;
+    }
     public int getHowMany() {
         return howMany;
     }

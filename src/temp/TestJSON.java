@@ -12,15 +12,17 @@ import FilesClass.DataFile;
 public class TestJSON {
 	public static void main(String args[]) {
 
-		// Customer cus1=new Customer("Nurad Hussen","mure","nurad");
-		// // Customer cus2=new Customer("Alamudin","jj","alex");
-		// Food fo=new Food("Shiro",780,120);
-		// Admin admin=new Admin(34,"Murad","233");
-		// Order o=new Order(new ArrayList(),cus1,new Date());
-		// Delivery del=new Delivery("Addmn",o);
+		Customer cus1=new Customer("Nurad Hussen","mure","nurad");
+		Food fo=new Food("Shiro",780,120);
+		Admin admin=new Admin(34,"Murad","233");
+		Order o=new Order(new ArrayList<Food>(),cus1);
+		Order o2=new Order(new ArrayList<Food>(),cus1);
+		Delivery del=new Delivery("Addmn",o);
+		System.out.println(o.getId());
+		System.out.println(o2.getId());
 
 		
-		// DataFile c=DataFile.getInstance();
+		DataFile c=DataFile.getInstance();
 		// c.addToCollection(cus1);
 		// c.addToCollection(fo);
 		// c.addToCollection(admin);
@@ -50,9 +52,7 @@ public class TestJSON {
 		// System.out.println(test);
 		// test.remove(1);
 		// System.out.println(test);
-		while(true){
-			System.out.println("h");
-		}
+		
 
 
 

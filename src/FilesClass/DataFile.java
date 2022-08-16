@@ -22,7 +22,7 @@ public final class DataFile implements Serializable {
         return instance;
     }
     //the constructor for the class Collection of Customer class
-    DataFile(){
+    private DataFile(){
         readFromFile();
         try{
             Customer.count=customerCollection.size()!=0?customerCollection.get(customerCollection.size()-1).getId():0;
@@ -142,7 +142,7 @@ public final class DataFile implements Serializable {
         return -1;
     }
     //Delete customer 
-    void delete(Customer customer){
+    public void delete(Customer customer){
         int index=search( customer);
         if(index!=-1){
             customerCollection.remove(index);
@@ -150,7 +150,7 @@ public final class DataFile implements Serializable {
         }
 
     }
-    void delete(Admin admin){
+    public void delete(Admin admin){
         int index=search(admin);
         if(index!=-1){
             adminList.remove(index);
@@ -165,16 +165,19 @@ public final class DataFile implements Serializable {
             writeToFile();
         }
     }
-    void delete(Food food){
+    public void delete(Food food){
         int index=search(food);
         if(index!=-1){
             foodList.remove(index);
             writeToFile();
         }
     }
-    void delete(Order order){
+    public void delete(Order order){
+       System.out.println("problem");
         int index=search(order);
         if(index!=-1){
+            orderList.remove(index);
+            writeToFile();
 
         }
     }
@@ -242,7 +245,6 @@ public final class DataFile implements Serializable {
         }
         obInCustomer.close();}
         catch(FileNotFoundException e){
-            // File file=new File("src/FilesClass","data");
             
             e.printStackTrace();
             //Todo thiss....

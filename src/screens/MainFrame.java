@@ -1,20 +1,14 @@
 package screens;
-// package ClassFiles;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 import ClassFiles.*;
 import FilesClass.*;
-
 import java.awt.Color;
-import java.awt.*;
 import java.awt.event.ActionListener;
-import java.time.ZoneId;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.*;
 
 public class MainFrame extends JFrame implements ActionListener {
 
@@ -25,7 +19,6 @@ public class MainFrame extends JFrame implements ActionListener {
 	private String[] chooseUsers;
 	private JButton bRegister;
 	private JButton bLogin;
-	// private JLabel test1;
 	private JLabel userValidLabel;
 	private JLabel passValidLabel;
 	private JLabel lblNewLabel_2;
@@ -33,24 +26,22 @@ public class MainFrame extends JFrame implements ActionListener {
 	private JLabel restrauntLabel;
 	private JLabel lblNewLabel;
 	private JButton bReset;
-	private  JComboBox comboBox;
-	boolean isRemoved=false;
+	private  JComboBox<String> comboBox;
+	private boolean isRemoved=false;
 
 	
 	public MainFrame() {
 		
-		// System.out.println(UIManager.getDimension(System.in));
 		ImageIcon photo= new ImageIcon("src\\images\\food.jpg");
 		setForeground(Color.LIGHT_GRAY);
 		getContentPane().setBackground(new Color(255,255,255,0));
 		
 		setResizable(false);
-		chooseUsers = new String[] {"Admin","Customer","Delivery","Restraunts"};
+		chooseUsers = new String[] {"Admin","Customer"};
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(450, 200, 720, 500);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(10, 119, 153,80));
-		// contentPane.setBackground(new Color(255,255,255,0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -77,7 +68,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		lblNewLabel_1.setBounds(177, 170, 109, 23);
 		contentPane.add(lblNewLabel_1);
 		
-		 bLogin = new JButton("Login");
+		bLogin = new JButton("Login");
 		bLogin.setBounds(258, 251, 83, 23);
 		bLogin.addActionListener(this);
 		contentPane.add(bLogin);
@@ -92,7 +83,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		passwordField.addActionListener(this);
 		contentPane.add(passwordField);
 		
-		comboBox = new JComboBox(chooseUsers);
+		comboBox = new JComboBox<String>(chooseUsers);
 		comboBox.addActionListener(this);
 		comboBox.setBackground(new Color(248, 248, 255,60));
 		comboBox.setForeground(new Color(248, 248, 255));
@@ -102,6 +93,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		comboBox.setBounds(10, 11, 109, 22);
 		contentPane.add(comboBox);
 		
+
 		bRegister = new JButton("Create");
 		bRegister.addActionListener(this);
 		bRegister.setBounds(334, 285, 90, 23);
@@ -154,7 +146,6 @@ public class MainFrame extends JFrame implements ActionListener {
 				}
 				else if(comboBox.getSelectedIndex()==1){
 					lblNewLabel.setText("User name");
-					System.out.println("heeefewd");
 					if(isRemoved){
 						add();
 					}
@@ -193,6 +184,7 @@ public class MainFrame extends JFrame implements ActionListener {
 		this.repaint();
 		isRemoved=true;
 	}
+	// verifies the inputs  from
 	int  verifyUser(ActionEvent e){
 		if(e.getSource()==bLogin) {
 			userValidLabel.setText(" ");
@@ -263,7 +255,6 @@ public class MainFrame extends JFrame implements ActionListener {
 			}
 			else{
 				passValidLabel.setText("Invalid password");
-				// new AdminFrame();
 				return 56;
 			}}
 		}catch(NumberFormatException Ae){

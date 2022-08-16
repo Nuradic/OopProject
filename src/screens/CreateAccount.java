@@ -2,15 +2,10 @@ package screens;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import ClassFiles.Customer;
 import FilesClass.DataFile;
-
-import java.awt.Window.Type;
-import javax.swing.*;
-import javax.swing.BorderFactory;
 public class CreateAccount extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
@@ -46,8 +41,7 @@ public class CreateAccount extends JFrame implements ActionListener {
         textField.setBackground(new Color(255,255,255,60));
         contentPane.add(textField);
         textField.setColumns(10);
-        // Border tBorder= BorderFactory.createLineBorder( Color.RED,1);
-        // textField.setBorder(tBorder);
+
         JLabel lblNewLabel = new JLabel("Full Name");
         lblNewLabel.setFont(new Font("Ubuntu", Font.PLAIN, 16));
         lblNewLabel.setForeground(new Color(248, 248, 255));
@@ -113,6 +107,7 @@ public class CreateAccount extends JFrame implements ActionListener {
         passwordField_1.setBackground(new Color(255,255,255,60));
         contentPane.add(passwordField_1);
         passwordField_1.setColumns(10);
+        // passwordField.
 
         conLabel = new JLabel("");
         conLabel.setBounds(154, 215, 100, 14);
@@ -152,7 +147,6 @@ public class CreateAccount extends JFrame implements ActionListener {
             }
             else {
                 DataFile cc= DataFile.getInstance();
-                // String user=String.valueOf(passwordField.getPassword());
                 Customer  cus=new Customer(textField.getText(),textField_1.getText(),String.valueOf(passwordField.getPassword()));
                 if(cc.search(cus)==-1){
                     if(String.valueOf(passwordField_1.getPassword()).equals(String.valueOf(passwordField.getPassword()))){

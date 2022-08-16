@@ -1,6 +1,7 @@
 
 package ClassFiles;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,24 +10,28 @@ public class Order implements Serializable {
     //field variables for the order class 
     private ArrayList<Food> foodList =new ArrayList<>();
     private  int id;
-    public static int count=0;
+    public static int count;
     private Customer customer;
-    private Date whenOrdered;
+    private String whenOrdered;
     private Date whenWillDeliver;
-    private Boolean isPayed;
+    private int totalPrice;
     public Order(ArrayList<Food> foodList,Customer customer){
         this.foodList= foodList;
         this.customer = customer;
-        whenOrdered =new Date();
-        // whenOrdered=d;
+        whenOrdered =new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
+        id=Order.count;
+        Order.count++;
+        setTotalPrice();
     }
     
     //setters for the field variables
     public void setWhenWillDeliver(Date whenWillDeliver) {
         this.whenWillDeliver = whenWillDeliver;
     };
-    public void setIsPayed(Boolean isPayed) {
-        this.isPayed = isPayed;
+    public void setTotalPrice() {
+        for(int i=0;i<foodList.size();i++){
+            totalPrice =totalPrice+foodList.get(i).getPrice();
+        }
     }
     //getters of field variables
     public int getId(){
@@ -39,7 +44,7 @@ public class Order implements Serializable {
         return customer;
     }
     
-    public Date getWhenOrdered() {
+    public String getWhenOrdered() {
         return whenOrdered;
     };
     
@@ -47,8 +52,8 @@ public class Order implements Serializable {
         return whenWillDeliver;
     }
     
-    public Boolean getIsPayed() {
-        return isPayed;
+    public int getTotalPrice() {
+        return totalPrice;
     }
     
     
